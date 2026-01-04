@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 // Micro-interaction button (Center Feature)
+// Micro-interaction button (Center Feature)
 const ShopButton = ({ containerRef, theme }: { containerRef: React.RefObject<HTMLDivElement | null>; theme: string }) => {
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
   const { contextSafe } = useGSAP({ scope: containerRef });
@@ -14,22 +15,47 @@ const ShopButton = ({ containerRef, theme }: { containerRef: React.RefObject<HTM
   const yTween = useRef<gsap.core.Tween | null>(null);
   const rotTween = useRef<gsap.core.Tween | null>(null);
 
-  useGSAP(() => {
+  // Helper to animate letters with different intensities
+  const animateLetters = (state: 'calm' | 'hover') => {
     if (!buttonWrapperRef.current) return;
-
-    // Floating letters animation
     const letters = buttonWrapperRef.current.querySelectorAll('.floating-letter');
-    letters.forEach((letter) => {
+
+    // Kill existing animations on letters to prevent conflicts
+    gsap.killTweensOf(letters);
+
+    letters.forEach((letter, i) => {
+      let baseX = 0;
+      let baseY = 0;
+
+      if (state === 'hover') {
+        // Push out logic: D(0), Y(1), O(2), R(3)
+        // D: Top-Left, Y: Top-Right, O: Bottom-Left, R: Bottom-Right
+        const isLeft = i === 0 || i === 2;
+        const isTop = i === 0 || i === 1;
+
+        // Push out by ~15px
+        baseX = isLeft ? -15 : 15;
+        baseY = isTop ? -8 : 8; // Less vertical push since they are already stacked
+      }
+
       gsap.to(letter, {
-        x: "random(-4, 4)",
-        y: "random(-4, 4)",
+        x: `random(${baseX - 3}, ${baseX + 3})`, // Float around the new base position
+        y: `random(${baseY - 3}, ${baseY + 3})`,
         rotation: "random(-5, 5)",
         duration: "random(2, 4)",
         ease: "sine.inOut",
         repeat: -1,
         yoyo: true,
+        overwrite: "auto"
       });
     });
+  };
+
+  useGSAP(() => {
+    if (!buttonWrapperRef.current) return;
+
+    // Initial Start - Calm
+    animateLetters('calm');
 
     // Function to start the random wandering for the button itself
     const startWandering = () => {
@@ -113,6 +139,7 @@ const ShopButton = ({ containerRef, theme }: { containerRef: React.RefObject<HTM
   }, { scope: buttonWrapperRef });
 
   const onHover = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
+    // 1. Button Scale/Glow
     gsap.to(e.currentTarget, {
       scale: 1.1,
       boxShadow: `0 0 40px ${theme === 'blue' ? 'rgba(59, 130, 246, 0.6)' :
@@ -123,22 +150,28 @@ const ShopButton = ({ containerRef, theme }: { containerRef: React.RefObject<HTM
       duration: 0.4,
       ease: "power3.out",
     });
+
+    // 2. Expand Letters
+    animateLetters('hover');
   });
 
   const onLeave = contextSafe((e: React.MouseEvent<HTMLButtonElement>) => {
+    // 1. Reset Button Scale/Glow
     gsap.to(e.currentTarget, {
       scale: 1,
       boxShadow: "0 0 0px rgba(255,255,255,0)",
       duration: 0.4,
       ease: "power3.out",
     });
+
+    // 2. Calm Letters
+    animateLetters('calm');
   });
 
   // Dynamic classes for the button based on theme
   const getButtonStyles = () => {
     // Glassmorphism: semi-transparent background + blur
     const base = "group relative flex h-40 w-40 items-center justify-center rounded-full border border-dashed backdrop-blur-2xl transition-all duration-500 hover:border-solid";
-
     switch (theme) {
       case 'blue': return `${base} bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300 ring-1 ring-blue-400/20`;
       case 'green': return `${base} bg-green-500/20 border-green-400/30 hover:bg-green-500/30 hover:border-green-300 ring-1 ring-green-400/20`;
