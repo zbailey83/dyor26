@@ -116,9 +116,9 @@ const ShopButton = ({ containerRef, theme }: { containerRef: React.RefObject<HTM
     gsap.to(e.currentTarget, {
       scale: 1.1,
       boxShadow: `0 0 40px ${theme === 'blue' ? 'rgba(59, 130, 246, 0.6)' :
-          theme === 'green' ? 'rgba(34, 197, 94, 0.6)' :
-            theme === 'red' ? 'rgba(239, 68, 68, 0.6)' :
-              'rgba(255,255,255,0.4)'
+        theme === 'green' ? 'rgba(34, 197, 94, 0.6)' :
+          theme === 'red' ? 'rgba(239, 68, 68, 0.6)' :
+            'rgba(255,255,255,0.4)'
         }`,
       duration: 0.4,
       ease: "power3.out",
@@ -172,9 +172,9 @@ const ShopButton = ({ containerRef, theme }: { containerRef: React.RefObject<HTM
 
         {/* Animated ring pulse - tinted by theme */}
         <div className={`absolute inset-0 -z-10 animate-ping rounded-full opacity-30 duration-1000 ${theme === 'blue' ? 'bg-blue-500' :
-            theme === 'green' ? 'bg-green-500' :
-              theme === 'red' ? 'bg-red-500' :
-                'bg-zinc-500'
+          theme === 'green' ? 'bg-green-500' :
+            theme === 'red' ? 'bg-red-500' :
+              'bg-zinc-500'
           }`} />
       </button>
     </div>
@@ -278,7 +278,7 @@ export default function QuantumTickerHero() {
         }`} />
 
       {/* Tech Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.07)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)] pointer-events-none" />
 
       {/* Central Feature */}
       <ShopButton containerRef={container} theme={theme} />
@@ -366,6 +366,11 @@ export default function QuantumTickerHero() {
       {/* Theme/Color Switcher */}
       <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 gap-4 z-40">
         <button
+          onClick={() => setTheme('default')}
+          className={`h-6 w-6 rounded-full border border-white/20 bg-zinc-950 transition-all hover:scale-125 hover:border-white ${theme === 'default' ? 'ring-2 ring-white ring-offset-2 ring-offset-black' : ''}`}
+          aria-label="Default Black Theme"
+        />
+        <button
           onClick={() => setTheme('blue')}
           className={`h-6 w-6 rounded-full border border-white/20 bg-blue-600 transition-all hover:scale-125 hover:border-white ${theme === 'blue' ? 'ring-2 ring-white ring-offset-2 ring-offset-black' : ''}`}
           aria-label="Blue Theme"
@@ -380,11 +385,6 @@ export default function QuantumTickerHero() {
           className={`h-6 w-6 rounded-full border border-white/20 bg-red-600 transition-all hover:scale-125 hover:border-white ${theme === 'red' ? 'ring-2 ring-white ring-offset-2 ring-offset-black' : ''}`}
           aria-label="Red Theme"
         />
-        {/* Reset button? Optional, but good UX if they want to go back to black. But prompt didn't strictly ask for it, just switchers. 
-            I'll assume clicking one of them sets it. To go back to black, maybe a 4th button 'Default'?
-            The prompt says "turn the dark-grey/black color theme into the button's color". 
-            I'll leave it as just the 3 colored buttons for now per strict instruction. 
-        */}
       </div>
     </div>
   );
