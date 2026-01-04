@@ -125,10 +125,10 @@ const ShopButton = ({ containerRef }: { containerRef: React.RefObject<HTMLDivEle
       <button
         onMouseEnter={onHover}
         onMouseLeave={onLeave}
-        className="group relative flex h-32 w-32 items-center justify-center rounded-full border border-zinc-700 bg-black/80 backdrop-blur-xl transition-colors hover:border-zinc-400"
+        className="group relative flex h-40 w-40 items-center justify-center rounded-full border border-zinc-700 bg-black/80 backdrop-blur-xl transition-colors hover:border-zinc-400"
       >
-        <span className="z-10 text-center font-mono text-xs font-bold uppercase tracking-widest text-zinc-100">
-          Enter<br />Shop
+        <span className="z-10 text-center font-sans text-5xl font-black leading-[0.85] tracking-tighter text-zinc-100">
+          D Y<br />O R
         </span>
         {/* Animated ring pulse */}
         <div className="absolute inset-0 -z-10 animate-ping rounded-full bg-zinc-800 opacity-20 duration-1000" />
