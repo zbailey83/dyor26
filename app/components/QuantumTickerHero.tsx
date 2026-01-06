@@ -1,136 +1,8 @@
 "use client";
 
-import React, { useRef, useMemo, useState, Suspense } from "react";
+import React, { useRef, useMemo, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { Canvas } from "@react-three/fiber";
-import { useLoader, useFrame } from "@react-three/fiber";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import * as THREE from "three";
-
-// 3D Glasses Component
-const FloatingGlasses = () => {
-  const groupRef = useRef<THREE.Group>(null);
-
-  // Load just the OBJ file without materials
-  const obj = useLoader(OBJLoader, '/GlassesOBJ.obj');
-
-  // Animation loop
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.3;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.5;
-    }
-  });
-
-  // Clone and apply material
-  const glassesClone = useMemo(() => {
-    if (obj) {
-      const clone = obj.clone();
-      clone.scale.setScalar(0.3); // Smaller scale for better fit
-
-      // Apply a simple material to all meshes
-      clone.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.material = new THREE.MeshPhongMaterial({
-            color: 0x444444,
-            shininess: 100,
-            transparent: true,
-            opacity: 0.8
-          });
-        }
-      });
-
-      return clone;
-    }
-    return null;
-  }, [obj]);
-
-  if (!glassesClone) return null;
-
-  return (
-    <group ref={groupRef}>
-      <primitive object={glassesClone} />
-    </group>
-  );
-};
-
-// Fallback simple glasses shape if OBJ fails to load
-const SimpleGlasses = () => {
-  const groupRef = useRef<THREE.Group>(null);
-
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.3;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.5;
-    }
-  });
-
-  return (
-    <group ref={groupRef}>
-      {/* Left lens */}
-      <mesh position={[-0.3, 0, 0]}>
-        <ringGeometry args={[0.15, 0.25, 16]} />
-        <meshPhongMaterial color={0x333333} transparent opacity={0.7} />
-      </mesh>
-      {/* Right lens */}
-      <mesh position={[0.3, 0, 0]}>
-        <ringGeometry args={[0.15, 0.25, 16]} />
-        <meshPhongMaterial color={0x333333} transparent opacity={0.7} />
-      </mesh>
-      {/* Bridge */}
-      <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.02, 0.02, 0.2]} />
-        <meshPhongMaterial color={0x222222} />
-      </mesh>
-    </group>
-  );
-};
-
-// Multiple Floating Glasses positioned around the ribbons
-const GlassesField = () => {
-  const positions: [number, number, number][] = [
-    [-4, 2, -2],
-    [4, -1, -1],
-    [-3, -2, 1],
-    [5, 1, -3],
-    [-2, 3, 2],
-    [3, -3, -2]
-  ];
-
-  return (
-    <>
-      {positions.map((position, index) => (
-        <group key={index} position={position}>
-          <Suspense fallback={<SimpleGlasses />}>
-            <FloatingGlasses />
-          </Suspense>
-        </group>
-      ))}
-    </>
-  );
-};
-
-// 3D Scene Container
-const ThreeDScene = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none z-20">
-      <Canvas
-        camera={{ position: [0, 0, 10], fov: 50 }}
-        style={{ background: 'transparent' }}
-      >
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={0.8} />
-        <pointLight position={[-10, -10, -10]} intensity={0.3} />
-        <Suspense fallback={null}>
-          <GlassesField />
-        </Suspense>
-      </Canvas>
-    </div>
-  );
-};
 
 // Micro-interaction button (Center Feature)
 // Micro-interaction button (Center Feature)
@@ -417,6 +289,15 @@ export default function QuantumTickerHero() {
     }
   };
 
+  const getThemeGradient = () => {
+    switch (theme) {
+      case 'blue': return 'linearGradient(to bottom, #1e3a8a, #000000)'; // Example
+      // Actually let's just stick to the requested "dark-grey/black" -> "button's color" transition logic
+      // The easiest way is to change the main div's background class.
+      default: return '';
+    }
+  };
+
   return (
     <div
       ref={container}
@@ -435,13 +316,10 @@ export default function QuantumTickerHero() {
       {/* Central Feature */}
       <ShopButton containerRef={container} theme={theme} />
 
-      {/* 3D Floating Glasses */}
-      <ThreeDScene />
-
       {/* The Orbiting Ribbons */}
       <div className="orbit-container absolute inset-0 flex items-center justify-center pointer-events-none will-change-transform">
         <svg
-          className="h-[80vh] w-[80vh] max-w-none"
+          className="h-[120vh] w-[120vh] max-w-none"
           viewBox="0 0 1000 1000"
           style={{ overflow: 'visible' }}
         >
@@ -458,24 +336,24 @@ export default function QuantumTickerHero() {
             </linearGradient>
           </defs>
 
-          {/* Orbit Path 1: Tilted Ellipse - Reduced by 66% */}
+          {/* Orbit Path 1: Tilted Ellipse */}
           <path
             id="orbit-1"
-            d="M 300,500 
-                   C 300,350 700,350 700,500 
-                   C 700,650 300,650 300,500"
+            d="M 150,500 
+                   C 150,200 850,200 850,500 
+                   C 850,800 150,800 150,500"
             fill="none"
             stroke="rgba(255,255,255,0.02)"
             vectorEffect="non-scaling-stroke"
             transform="rotate(-15, 500, 500)"
           />
 
-          {/* Orbit Path 2: Opposite Tilted Ellipse - Reduced by 66% */}
+          {/* Orbit Path 2: Opposite Tilted Ellipse */}
           <path
             id="orbit-2"
-            d="M 300,500 
-                   C 300,650 700,650 700,500 
-                   C 700,350 300,350 300,500"
+            d="M 150,500 
+                   C 150,800 850,800 850,500 
+                   C 850,200 150,200 150,500"
             fill="none"
             stroke="rgba(255,255,255,0.02)"
             vectorEffect="non-scaling-stroke"
