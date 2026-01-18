@@ -1,0 +1,23 @@
+const collection = [
+    { title: "Mountain Vista", img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" },
+    { title: "Ocean Waves", img: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=400" },
+    { title: "Forest Path", img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400" },
+    { title: "Desert Dunes", img: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400" },
+    { title: "City Lights", img: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400" },
+    { title: "Sunset Sky", img: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=400" },
+    { title: "Winter Snow", img: "https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=400" },
+    { title: "Tropical Beach", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400" },
+    { title: "Autumn Leaves", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" },
+    { title: "Starry Night", img: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400" },
+    { title: "Urban Street", img: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400" },
+    { title: "Misty Morning", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400" },
+    { title: "Canyon View", img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" },
+    { title: "Lake Reflection", img: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400" },
+    { title: "Flower Garden", img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400" },
+    { title: "Rocky Coast", img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" },
+    { title: "Green Valley", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400" },
+    { title: "Northern Lights", img: "https://images.unsplash.com/photo-1483347756197-71ef80e95f73?w=400" },
+    { title: "Waterfall", img: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=400" },
+    { title: "Golden Hour", img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" },
+];
+export default collection;
